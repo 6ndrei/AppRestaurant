@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
+//.
         Inregistrare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

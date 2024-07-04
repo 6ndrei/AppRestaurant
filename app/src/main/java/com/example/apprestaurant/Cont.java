@@ -25,7 +25,7 @@ public class Cont extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("ContFragment", "onClick: Logout button clicked");
-                // Șterge sesiunea utilizatorului și navighează înapoi la LoginActivity
+                // Șterge sesiunea utilizatorului și navighează înapoi la LoginActivity.
                 SharedPreferences preferences = getActivity().getSharedPreferences("user_session", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.clear();

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setPrompt("");
         integrator.setOrientationLocked(false); // Permite orientarea ecranului în mod liber
-        integrator.initiateScan(); // Inițiază scanarea codului QR
+        integrator.initiateScan(); // Inițiază scanarea codului QR.
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

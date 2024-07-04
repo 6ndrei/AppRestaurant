@@ -28,7 +28,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String username = utilizator.getText().toString().trim();
         String password = parola.getText().toString().trim();
         String rank = "User";
-
+//.
         Log.d("RegistrationActivity", "Registering user: " + username + ", Password: " + password);
 
         if(username.length()<=3) { Toast.makeText(this, "Numele de utilizator trebuie sa fie mai lung de 3 litere", Toast.LENGTH_SHORT).show();
