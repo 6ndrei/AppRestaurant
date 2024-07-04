@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-
+//.
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation("com.google.zxing:core:3.4.1")

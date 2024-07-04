@@ -28,7 +28,7 @@
         android:layout_marginTop="64dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="244dp"
-        android:text="Sign Out"
+        android:text="Sign-Out"
         app:layout_constraintBottom_toTopOf="@+id/text_notifications"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

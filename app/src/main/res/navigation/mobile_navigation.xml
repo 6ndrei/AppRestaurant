@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_acasa"
         android:name="com.example.apprestaurant.ui.home.HomeFragment"
-        android:label="@string/title_home"
+        android:label="Acasa"
         tools:layout="@layout/fragment_home" />
 
     <fragment
