@@ -14,12 +14,12 @@
     <fragment
         android:id="@+id/navigation_catalog"
         android:name="com.example.apprestaurant.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Scaneaza"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_cont"
-        android:name="com.example.apprestaurant.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.example.apprestaurant.Cont"
+        android:label="Cont"
+        tools:layout="@layout/activity_cont" />
 </navigation>

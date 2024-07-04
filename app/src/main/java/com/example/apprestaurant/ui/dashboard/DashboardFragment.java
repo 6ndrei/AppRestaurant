@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.apprestaurant.databinding.FragmentDashboardBinding;
 
@@ -16,16 +15,18 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        // Accesează elementele din layout direct
+      //  binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
+        final TextView textView = binding.ScaneazaButon2;
+        textView.setText("Scanează");
+
         return root;
     }
 

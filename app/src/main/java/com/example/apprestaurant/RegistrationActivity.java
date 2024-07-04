@@ -31,17 +31,17 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Log.d("RegistrationActivity", "Registering user: " + username + ", Password: " + password);
 
-        boolean inserted = database.insertUser(username, password, rank);
+        if(username.length()<=3) { Toast.makeText(this, "Numele de utilizator trebuie sa fie mai lung de 3 litere", Toast.LENGTH_SHORT).show();
+            return; }
+        if(password.length()<6) { Toast.makeText(this, "Parola trebuie sa fie minim 6 litere", Toast.LENGTH_SHORT).show();
+            return; }
 
-        if (username.length() > 3 && password.length() >= 6) {
+        boolean inserted = database.insertUser(username, password, rank);
             if (inserted) {
                 Toast.makeText(this, "Utilizator înregistrat cu succes!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(this, "Înregistrarea a eșuat!", Toast.LENGTH_SHORT).show();
             }
-        }
-        if(username.length()<=3) Toast.makeText(this, "Numele de utilizator trebuie sa fie mai lung de 3 litere", Toast.LENGTH_SHORT).show();
-        if(password.length()<6) Toast.makeText(this, "Parola trebuie sa fie minim 6 litere", Toast.LENGTH_SHORT).show();
     }
 }
