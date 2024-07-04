@@ -22,7 +22,7 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Accesează elementele din layout direct
+        // Accesează elementele din layout direct.
       //  binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
         final TextView textView = binding.ScaneazaButon2;
         textView.setText("Scanează");
