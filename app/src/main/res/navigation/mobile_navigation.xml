@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_cont"
-        android:name="com.example.apprestaurant.Cont"
+        android:name="com.example.apprestaurant.Account"
         android:label="Cont"
         tools:layout="@layout/activity_cont" />
 </navigation>

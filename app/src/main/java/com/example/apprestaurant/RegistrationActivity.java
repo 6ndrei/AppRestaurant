@@ -9,25 +9,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText utilizator;
-    private EditText parola;
-    private BazaDeDate database;
+    private EditText usernameRegister;
+    private EditText passwordRegister;
+    private DataBase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        utilizator = findViewById(R.id.utilizatorInregistrare);
-        parola = findViewById(R.id.parolaInregistrare);
+        usernameRegister = findViewById(R.id.RegisterUsername);
+        passwordRegister = findViewById(R.id.RegisterPassword);
 
-        database = new BazaDeDate(this);
+        database = new DataBase(this);
     }
 
     public void registerUser(View view) {
-        String username = utilizator.getText().toString().trim();
-        String password = parola.getText().toString().trim();
+        String username = usernameRegister.getText().toString().trim();
+        String password = passwordRegister.getText().toString().trim();
         String rank = "User";
+        String taable = "0";
 //.
         Log.d("RegistrationActivity", "Registering user: " + username + ", Password: " + password);
 
@@ -35,13 +36,16 @@ public class RegistrationActivity extends AppCompatActivity {
             return; }
         if(password.length()<6) { Toast.makeText(this, "Parola trebuie sa fie minim 6 litere", Toast.LENGTH_SHORT).show();
             return; }
+        if(database.isUsernameExists(username)) { Toast.makeText(this, "Numele de utilizator există deja", Toast.LENGTH_SHORT).show();
+            return; }
 
-        boolean inserted = database.insertUser(username, password, rank);
+        boolean inserted = database.insertUser(username, password, rank, taable);
             if (inserted) {
                 Toast.makeText(this, "Utilizator înregistrat cu succes!", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 Toast.makeText(this, "Înregistrarea a eșuat!", Toast.LENGTH_SHORT).show();
+                Log.e("Registration", "Failed to insert user into database.");
             }
     }
 }

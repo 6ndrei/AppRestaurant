@@ -12,7 +12,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class Cont extends Fragment {
+public class Account extends Fragment {
     private Button logOutButton;
 
     @Override

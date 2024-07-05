@@ -38,7 +38,11 @@
             android:exported="false"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".Cont"
+            android:name=".ActivityCount"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".Account"
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="Cont" />

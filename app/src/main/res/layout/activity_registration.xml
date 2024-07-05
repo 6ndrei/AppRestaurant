@@ -6,7 +6,7 @@
              android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/utilizatorInregistrare"
+        android:id="@+id/RegisterUsername"
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginStart="55dp"
@@ -15,15 +15,15 @@
         android:layout_marginBottom="13dp"
         android:hint="Nume utilizator"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/parolaInregistrare"
+        app:layout_constraintBottom_toTopOf="@+id/RegisterPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/parolaInregistrare"
+        android:id="@+id/RegisterPassword"
         android:layout_width="300dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:layout_marginStart="55dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="56dp"
@@ -31,13 +31,13 @@
         android:hint="Parola"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/Inregistrare"
+        app:layout_constraintBottom_toTopOf="@+id/Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/utilizatorInregistrare" />
+        app:layout_constraintTop_toBottomOf="@+id/RegisterUsername" />
 
     <Button
-        android:id="@+id/Inregistrare"
+        android:id="@+id/Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
@@ -49,6 +49,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/parolaInregistrare" />
+        app:layout_constraintTop_toBottomOf="@+id/RegisterPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
