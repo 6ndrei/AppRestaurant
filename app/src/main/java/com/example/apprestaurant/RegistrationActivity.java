@@ -6,46 +6,73 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText usernameRegister;
     private EditText passwordRegister;
-    private DataBase database;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        FirebaseApp.initializeApp(this);
 
         usernameRegister = findViewById(R.id.RegisterUsername);
         passwordRegister = findViewById(R.id.RegisterPassword);
 
-        database = new DataBase(this);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public void registerUser(View view) {
         String username = usernameRegister.getText().toString().trim();
         String password = passwordRegister.getText().toString().trim();
-        String rank = "User";
-        String taable = "0";
-//.
-        Log.d("RegistrationActivity", "Registering user: " + username + ", Password: " + password);
 
-        if(username.length()<=3) { Toast.makeText(this, "Numele de utilizator trebuie sa fie mai lung de 3 litere", Toast.LENGTH_SHORT).show();
-            return; }
-        if(password.length()<6) { Toast.makeText(this, "Parola trebuie sa fie minim 6 litere", Toast.LENGTH_SHORT).show();
-            return; }
-        if(database.isUsernameExists(username)) { Toast.makeText(this, "Numele de utilizator există deja", Toast.LENGTH_SHORT).show();
-            return; }
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Introdu numele de utilizator și parola", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        boolean inserted = database.insertUser(username, password, rank, taable);
-            if (inserted) {
-                Toast.makeText(this, "Utilizator înregistrat cu succes!", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(this, "Înregistrarea a eșuat!", Toast.LENGTH_SHORT).show();
-                Log.e("Registration", "Failed to insert user into database.");
-            }
+        mAuth.createUserWithEmailAndPassword(username, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        addUserToFirestore(user.getUid(), username);
+                    } else {
+                        Toast.makeText(RegistrationActivity.this, "Înregistrare eșuată", Toast.LENGTH_SHORT).show();
+                        Log.e("RegistrationActivity", "Error creating user", task.getException());
+                    }
+                });
+    }
+
+    private void addUserToFirestore(String userId, String username) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("username", username);
+
+        db.collection("users").document(userId)
+                .set(user)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegistrationActivity.this, "Utilizator înregistrat cu succes!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, "Înregistrarea a eșuat!", Toast.LENGTH_SHORT).show();
+                            Log.e("RegistrationActivity", "Error adding user to Firestore", task.getException());
+                        }
+                    }
+                });
     }
 }
