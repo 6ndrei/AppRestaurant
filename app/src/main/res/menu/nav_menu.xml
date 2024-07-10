@@ -1,0 +1,15 @@
+<!-- nav_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_bauturi_non_alcoolice"
+            android:title="Băuturi Non-Alcoolice" />
+        <item
+            android:id="@+id/nav_bauturi_alcoolice"
+            android:title="Băuturi Alcoolice" />
+        <item
+            android:id="@+id/nav_mancare"
+            android:title="Mâncare" />
+        <!-- Alte categorii -->
+    </group>
+</menu>

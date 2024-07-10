@@ -11,6 +11,11 @@
         android:src="@drawable/bg"
         android:scaleType="centerCrop" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
@@ -21,6 +26,8 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="245dp"
         android:background="@android:color/transparent"
+        android:visibility="visible"
+        app:cardBackgroundColor="#A4FFFFFF"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,11 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
             android:orientation="vertical"
             android:padding="24dp"
-            android:background="@android:color/transparent">
-
-
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/loginText"
@@ -44,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAlignment="center"
-                android:textColor="#00BCD4"
+                android:textColor="#4DB6AC"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -57,10 +63,10 @@
                 android:drawableLeft="@drawable/ic_launcher_foreground"
                 android:drawablePadding="8dp"
                 android:hint="Username"
-                android:padding="8dp"
-                android:textColorHighlight="@color/cardview_dark_background"
+                android:inputType="text"
                 android:maxLines="1"
-                android:inputType="text"/>
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
 
             <EditText
                 android:id="@+id/password"
@@ -80,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="#00BCD4"
+                android:backgroundTint="#4DB6AC"
                 android:text="Login"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
