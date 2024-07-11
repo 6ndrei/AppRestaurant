@@ -1,12 +1,8 @@
 package com.example.apprestaurant.ui.dashboard;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,33 +12,67 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.apprestaurant.R;
+import com.example.apprestaurant.adapters.CategAdapter;
+import com.example.apprestaurant.adapters.ItemCategAdapter;
 import com.example.apprestaurant.databinding.FragmentDashboardBinding;
+import com.example.apprestaurant.models.CategModel;
+import com.example.apprestaurant.models.ItemCategModel;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardFragment extends Fragment {
 
-    private TextView table;
+    private FragmentDashboardBinding binding;
     private SharedPreferences sharedPreferences;
     private String qrContent = "";
+    private RecyclerView CategRec, ItemCategRec;
+    private List<CategModel> categModelList;
+    private List<ItemCategModel> itemCategModelList;
+    private CategAdapter categAdapter;
+    private ItemCategAdapter itemCategAdapter;
 
-    private FragmentDashboardBinding binding;
-
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        sharedPreferences = requireActivity().getSharedPreferences("Table_Session", 0);
-        qrContent = sharedPreferences.getString("qrContent", "");
-      /*  if (!qrContent.isEmpty()) {
-            binding.Table.setText(qrContent);
-        } else {
-            binding.Table.setText("0");
-        } */
+
+        CategRec = root.findViewById(R.id.RecViewCateg);
+        ItemCategRec = root.findViewById(R.id.RecViewItemCateg);
+
+        categModelList = new ArrayList<>();
+        categModelList.add(new CategModel(R.drawable.pizza, "Pizza"));
+        categModelList.add(new CategModel(R.drawable.non, "Non-Alcohol"));
+
+        itemCategModelList = new ArrayList<>();
+        itemCategModelList.add(new ItemCategModel(R.drawable.dinner, "Baclava", "10 minute", "50 RON"));
+
+
+        categAdapter = new CategAdapter(getActivity(), categModelList);
+        CategRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        CategRec.setHasFixedSize(true);
+        CategRec.setAdapter(categAdapter);
+
+        itemCategAdapter = new ItemCategAdapter(getActivity(), itemCategModelList);
+        ItemCategRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        ItemCategRec.setHasFixedSize(true);
+        ItemCategRec.setAdapter(itemCategAdapter);
+
+        CategRec.setVisibility(View.GONE);
+        ItemCategRec.setVisibility(View.GONE);
+
         binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
         binding.ScaneazaButon2.setText("Scanează");
+
+        sharedPreferences = requireActivity().getSharedPreferences("Table_Session", 0);
+        qrContent = sharedPreferences.getString("qrContent", "");
 
         return root;
     }
@@ -72,6 +102,10 @@ public class DashboardFragment extends Fragment {
                     editor.apply();
                     binding.ScaneazaButon2.setVisibility(View.GONE);
                     binding.TextQR.setVisibility(View.GONE);
+
+
+                    CategRec.setVisibility(View.VISIBLE);
+                    ItemCategRec.setVisibility(View.VISIBLE);
                 } else {
                     Toast.makeText(getActivity(), "Codul scanat nu este un QR", Toast.LENGTH_SHORT).show();
                 }
@@ -79,10 +113,9 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null; // Clean up binding
+        binding = null;
     }
-    }
+}

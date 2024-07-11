@@ -3,13 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_acasa">
+    app:startDestination="@+id/navigation_catalog">
 
-    <fragment
-        android:id="@+id/navigation_acasa"
-        android:name="com.example.apprestaurant.ui.home.HomeFragment"
-        android:label="Acasa"
-        tools:layout="@layout/fragment_home" />
+
 
     <fragment
         android:id="@+id/navigation_catalog"
