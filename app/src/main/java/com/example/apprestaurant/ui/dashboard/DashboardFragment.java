@@ -3,10 +3,10 @@ package com.example.apprestaurant.ui.dashboard;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,22 +21,29 @@ import com.example.apprestaurant.adapters.ItemCategAdapter;
 import com.example.apprestaurant.databinding.FragmentDashboardBinding;
 import com.example.apprestaurant.models.CategModel;
 import com.example.apprestaurant.models.ItemCategModel;
+import com.example.apprestaurant.models.UpdateItemCateg;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements UpdateItemCateg {
 
     private FragmentDashboardBinding binding;
     private SharedPreferences sharedPreferences;
     private String qrContent = "";
     private RecyclerView CategRec, ItemCategRec;
-    private List<CategModel> categModelList;
-    private List<ItemCategModel> itemCategModelList;
+    private ArrayList<CategModel> categModelList;
+    private ArrayList<ItemCategModel> itemCategModelList;
     private CategAdapter categAdapter;
     private ItemCategAdapter itemCategAdapter;
+    private FirebaseFirestore firestore;
 
     @Nullable
     @Override
@@ -48,14 +55,9 @@ public class DashboardFragment extends Fragment {
         ItemCategRec = root.findViewById(R.id.RecViewItemCateg);
 
         categModelList = new ArrayList<>();
-        categModelList.add(new CategModel(R.drawable.pizza, "Pizza"));
-        categModelList.add(new CategModel(R.drawable.non, "Non-Alcohol"));
-
         itemCategModelList = new ArrayList<>();
-        itemCategModelList.add(new ItemCategModel(R.drawable.dinner, "Baclava", "10 minute", "50 RON"));
 
-
-        categAdapter = new CategAdapter(getActivity(), categModelList);
+        categAdapter = new CategAdapter(getActivity(), categModelList, this);
         CategRec.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         CategRec.setHasFixedSize(true);
         CategRec.setAdapter(categAdapter);
@@ -65,14 +67,24 @@ public class DashboardFragment extends Fragment {
         ItemCategRec.setHasFixedSize(true);
         ItemCategRec.setAdapter(itemCategAdapter);
 
-        CategRec.setVisibility(View.GONE);
-        ItemCategRec.setVisibility(View.GONE);
-
-        binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
-        binding.ScaneazaButon2.setText("Scanează");
+        firestore = FirebaseFirestore.getInstance();
+        loadCategoriesFromFirebase();
 
         sharedPreferences = requireActivity().getSharedPreferences("Table_Session", 0);
         qrContent = sharedPreferences.getString("qrContent", "");
+        boolean isQRScanned = sharedPreferences.getBoolean("isQRScanned", false);
+
+        if (isQRScanned) {
+            binding.ScaneazaButon2.setVisibility(View.GONE);
+            binding.TextQR.setVisibility(View.GONE);
+            CategRec.setVisibility(View.VISIBLE);
+            ItemCategRec.setVisibility(View.VISIBLE);
+        } else {
+            CategRec.setVisibility(View.GONE);
+            ItemCategRec.setVisibility(View.GONE);
+            binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
+            binding.ScaneazaButon2.setText("Scanează");
+        }
 
         return root;
     }
@@ -99,10 +111,10 @@ public class DashboardFragment extends Fragment {
                     Toast.makeText(getActivity(), "Cod QR scanat: " + qrContent, Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("qrContent", qrContent);
+                    editor.putBoolean("isQRScanned", true);
                     editor.apply();
                     binding.ScaneazaButon2.setVisibility(View.GONE);
                     binding.TextQR.setVisibility(View.GONE);
-
 
                     CategRec.setVisibility(View.VISIBLE);
                     ItemCategRec.setVisibility(View.VISIBLE);
@@ -111,6 +123,74 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }
+    }
+
+    private void loadCategoriesFromFirebase() {
+        firestore.collection("categories").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    categModelList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String id = document.getId();
+                        String image = document.getString("image");
+                        String name = document.getString("name");
+                        categModelList.add(new CategModel(id, image, name));
+                    }
+                    categAdapter.notifyDataSetChanged();
+                    if (!categModelList.isEmpty()) {
+                        int selectedIndex = 0;
+                        DashboardFragment.this.callBack(selectedIndex, new ArrayList<>());
+                        CategRec.smoothScrollToPosition(selectedIndex);
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Failed to load categories", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void loadItemsForCategory(String categoryId) {
+        firestore.collection("items")
+                .whereEqualTo("categoryId", categoryId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            itemCategModelList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String image = document.getString("image");
+                                String name = document.getString("name");
+                                String timing = document.getString("timing");
+                                String price = document.getString("price");
+                                itemCategModelList.add(new ItemCategModel(image, name, timing, price));
+                            }
+                            itemCategAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getActivity(), "Failed to load items", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void callBack(int position, ArrayList<ItemCategModel> list) {
+        if (position >= 0 && position < categModelList.size()) {
+            String categoryId = categModelList.get(position).getId();
+            loadItemsForCategory(categoryId);
+        } else {
+            Log.e("DashboardFragment", "Invalid position: " + position);
+        }
+    }
+
+    public void clearSharedPreferences() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public void clearPreferences() {
+        clearSharedPreferences();
     }
 
     @Override

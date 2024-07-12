@@ -2,23 +2,23 @@ package com.example.apprestaurant.models;
 
 public class ItemCategModel {
 
-    int image;
+    String image;
     String name;
     String timing;
     String price;
 
-    public ItemCategModel(int image, String name, String timing, String price) {
+    public ItemCategModel(String image, String name, String timing, String price) {
         this.image = image;
         this.name = name;
         this.timing = timing;
         this.price = price;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

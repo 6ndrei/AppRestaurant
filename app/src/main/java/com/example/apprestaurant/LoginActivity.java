@@ -2,6 +2,7 @@ package com.example.apprestaurant;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.apprestaurant.ui.dashboard.DashboardFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView Register;
     private TextView ContinueAsGuest;
     private FirebaseAuth mAuth;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mAuth = FirebaseAuth.getInstance();
-
-        // Verificăm dacă utilizatorul este deja autentificat
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        // Obține referința la SharedPreferences și curăță preferințele
+        sharedPreferences = getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
+        clearSharedPreferences();
+
         if (currentUser != null) {
             if (currentUser.isAnonymous()) {
                 mAuth.signOut();
@@ -85,6 +92,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void clearSharedPreferences() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     private void loginUser(String username, String password) {
         mAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -114,9 +127,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToMainActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            if (currentUser.getEmail().equals("admin@admin.com")) {
+                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+            finish();
+        }
     }
 
     public void openRegistrationActivity() {
