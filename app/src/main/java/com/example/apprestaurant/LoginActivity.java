@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,6 +36,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mAuth = FirebaseAuth.getInstance();
+
+        // Verificăm dacă utilizatorul este deja autentificat
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            if (currentUser.isAnonymous()) {
+                mAuth.signOut();
+            } else {
+                navigateToMainActivity();
+            }
+        }
+
         usernameLogin = findViewById(R.id.username);
         passwordLogin = findViewById(R.id.password);
         btnLogin = findViewById(R.id.btn_login);
@@ -69,13 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         ContinueAsGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String guestUsername = "Vizitator";
-                String guestPassword = "GuestPassword";
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("username", guestUsername);
-                intent.putExtra("password", guestPassword);
-                startActivity(intent);
-                finish();
+                loginAsGuest();
             }
         });
     }
@@ -86,19 +91,32 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            SharedPreferences.Editor editor = getSharedPreferences("user_session", MODE_PRIVATE).edit();
-                            editor.putBoolean("isLoggedIn", true);
-                            editor.putString("username", username);
-                            editor.apply();
-
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            navigateToMainActivity();
                         } else {
                             Toast.makeText(LoginActivity.this, "Nume sau parolă greșită", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void loginAsGuest() {
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            navigateToMainActivity();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Eroare la autentificarea ca vizitator", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void navigateToMainActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void openRegistrationActivity() {
