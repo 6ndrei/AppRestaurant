@@ -47,12 +47,17 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
+            android:name=".CartFragment"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".Account"
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="Cont" />
         <activity
             android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:label="activity_registration" />
         <activity

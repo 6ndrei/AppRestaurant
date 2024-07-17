@@ -77,6 +77,8 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
         if (isQRScanned) {
             binding.ScaneazaButon2.setVisibility(View.GONE);
             binding.TextQR.setVisibility(View.GONE);
+            binding.blurredbg.setVisibility(View.GONE);
+            binding.scanQRCODE.setVisibility(View.GONE);
             CategRec.setVisibility(View.VISIBLE);
             ItemCategRec.setVisibility(View.VISIBLE);
         } else {
@@ -115,7 +117,8 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
                     editor.apply();
                     binding.ScaneazaButon2.setVisibility(View.GONE);
                     binding.TextQR.setVisibility(View.GONE);
-
+                    binding.blurredbg.setVisibility(View.GONE);
+                    binding.scanQRCODE.setVisibility(View.GONE);
                     CategRec.setVisibility(View.VISIBLE);
                     ItemCategRec.setVisibility(View.VISIBLE);
                 } else {

@@ -7,58 +7,93 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecViewCateg"
-        app:layout_constraintVertical_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecViewItemCateg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="6dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="70dp"
+    <ImageView
+        android:id="@+id/blurredbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/blurredbgdashboard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecViewCateg" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <Button
         android:id="@+id/ScaneazaButon2"
         android:layout_width="256dp"
         android:layout_height="48dp"
         android:layout_marginStart="77dp"
+        android:layout_marginTop="46dp"
         android:layout_marginEnd="78dp"
-        android:layout_marginBottom="86dp"
+        android:layout_marginBottom="160dp"
         android:text="Scaneaza"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@+id/TextQR" />
 
     <TextView
         android:id="@+id/TextQR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="571dp"
-        android:layout_marginEnd="60dp"
+        android:layout_width="348dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/rubik_black"
         android:text="Scaneaza codul QR de la masa pentru a incepe"
+        android:textAlignment="center"
+        android:textColor="#ADFFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/ScaneazaButon2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scanQRCODE"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/scanQRCODE"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="35dp"
+        android:src="@drawable/qrcode"
+        app:layout_constraintBottom_toTopOf="@+id/TextQR"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecViewCateg"
+        android:layout_width="401dp"
+        android:layout_height="124dp"
+        android:layout_margin="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1"
+        tools:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecViewItemCateg"
+        android:layout_width="match_parent"
+        android:layout_height="540dp"
+        android:layout_margin="6dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RecViewCateg"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAlignment="center"
-                android:textColor="#4DB6AC"
+                android:textColor="#4B2929"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -60,7 +60,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_launcher_foreground"
                 android:drawablePadding="8dp"
                 android:hint="Username"
                 android:inputType="text"
@@ -74,7 +73,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/ic_launcher_foreground"
                 android:drawablePadding="8dp"
                 android:hint="Password"
                 android:inputType="textPassword"
@@ -86,8 +84,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="#4DB6AC"
+                android:backgroundTint="#4B2929"
                 android:text="Login"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
 

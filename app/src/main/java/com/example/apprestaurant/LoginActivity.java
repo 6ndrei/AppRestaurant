@@ -129,7 +129,8 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToMainActivity() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            if (currentUser.getEmail().equals("admin@admin.com")) {
+            String email = currentUser.getEmail();
+            if (email != null && email.equals("admin@admin.com")) {
                 Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                 startActivity(intent);
             } else {
@@ -139,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
     }
+
 
     public void openRegistrationActivity() {
         Intent intent = new Intent(this, RegistrationActivity.class);

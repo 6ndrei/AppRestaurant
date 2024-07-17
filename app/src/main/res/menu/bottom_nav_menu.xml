@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <item
         android:id="@+id/navigation_catalog"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Catalog" />
+        android:icon="@drawable/dashboard"
+        android:title="Catalog"
+        app:cnb_iconColor="#f905"
+        app:cnb_textColor="#f905"
+        />
+
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/cart"
+        android:title="Cos"
+        app:cnb_iconColor="#5235"
+        app:cnb_textColor="#5235"
+        />
 
     <item
         android:id="@+id/navigation_cont"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="Cont" />
+        android:icon="@drawable/user"
+        android:title="Cont"
+        app:cnb_iconColor="#9643"
+        app:cnb_textColor="#9643"/>
 
 </menu>

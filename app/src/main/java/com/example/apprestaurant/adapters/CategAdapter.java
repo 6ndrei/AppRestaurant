@@ -24,9 +24,7 @@ public class CategAdapter extends RecyclerView.Adapter<CategAdapter.ViewHolder> 
     private final Activity activity;
     private final ArrayList<CategModel> list;
 
-    private boolean check = true;
-    private boolean select = true;
-    private int row_index = -1;
+    private int row_index = 0;
 
     public CategAdapter(Activity activity, ArrayList<CategModel> list, UpdateItemCateg updateItemCateg) {
         this.activity = activity;
@@ -58,20 +56,21 @@ public class CategAdapter extends RecyclerView.Adapter<CategAdapter.ViewHolder> 
 
         holder.name.setText(categModel.getName());
 
-        holder.cardViewItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                row_index = position;
-                notifyDataSetChanged();
-                updateItemCateg.callBack(position, new ArrayList<>());
-            }
-        });
-
-        if (row_index == position) {
+        if (position == row_index) {
             holder.cardViewItems.setBackgroundResource(R.drawable.change_bg);
         } else {
             holder.cardViewItems.setBackgroundResource(R.drawable.default_bg);
         }
+
+        holder.cardViewItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int actualPosition = holder.getAdapterPosition();
+                row_index = actualPosition;
+                notifyDataSetChanged();
+                updateItemCateg.callBack(actualPosition, new ArrayList<>());
+            }
+        });
     }
 
     @Override
