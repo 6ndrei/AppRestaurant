@@ -5,13 +5,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.apprestaurant.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +52,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        addUserToFirestore(user.getUid(), username);
+                        // Adăugăm utilizatorul în Firestore și îi atribuim un rol
+                        addUserToFirestore(user.getUid(), username, "user");
                     } else {
                         Toast.makeText(RegistrationActivity.this, "Înregistrare eșuată", Toast.LENGTH_SHORT).show();
                         Log.e("RegistrationActivity", "Error creating user", task.getException());
@@ -56,9 +61,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-    private void addUserToFirestore(String userId, String username) {
+    private void addUserToFirestore(String userId, String username, String role) {
         Map<String, Object> user = new HashMap<>();
         user.put("username", username);
+        user.put("role", role); // Adăugăm câmpul pentru rol
 
         db.collection("users").document(userId)
                 .set(user)

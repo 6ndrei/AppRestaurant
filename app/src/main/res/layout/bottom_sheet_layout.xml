@@ -32,98 +32,97 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/bottom_sheet_img"
-            android:layout_width="120dp"
-            android:layout_height="122dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="14dp"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="23dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dinner"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/CartItemName"
+            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintEnd_toStartOf="@+id/OrderName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.272"
             app:riv_corner_radius="8dp" />
 
         <TextView
             android:id="@+id/OrderName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="101dp"
-            android:layout_marginBottom="107dp"
+            android:layout_width="254dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="35dp"
             android:text="nume"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/OrderAdd"
-            app:layout_constraintStart_toEndOf="@+id/bottom_sheet_img"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/OrderPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="117dp"
-            android:layout_marginEnd="1dp"
-            android:layout_marginBottom="14dp"
-            android:text="pret"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/RONcart"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="156dp"
-            android:layout_marginTop="117dp"
-            android:layout_marginBottom="14dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/OrderPrice"
-            app:layout_constraintStart_toEndOf="@+id/bottom_sheet_img"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/money" />
-
-        <TextView
-            android:id="@+id/RONcart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="117dp"
-            android:layout_marginEnd="38dp"
-            android:layout_marginBottom="14dp"
-            android:text="RON"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/OrderPrice"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/OrderAdd"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="55dp"
-            android:backgroundTint="@color/white"
-            android:textColor="@color/black"
-            android:text="+"
-            app:layout_constraintBottom_toTopOf="@+id/OrderPrice"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/OrderName"
+            app:layout_constraintStart_toEndOf="@+id/bottom_sheet_img"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/OrderAddLinear"
+            android:layout_width="411dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="1dp"
+            android:background="@color/grey_font"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ConstrLay"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="-14dp">
+
+                <TextView
+                    android:id="@+id/RONcart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="RON"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/OrderPrice"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/OrderPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="203dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="pret"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/RONcart"
+                    app:layout_constraintStart_toEndOf="@+id/textView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="Adauga In Cos"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

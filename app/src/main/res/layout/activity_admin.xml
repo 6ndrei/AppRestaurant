@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Category Form -->
+        <!-- Add Category Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="Add Category" />
 
-        <!-- Delete Category -->
+        <!-- Delete Category Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_marginTop="16dp"
             android:background="@android:color/darker_gray" />
 
-        <!-- Item Form -->
+        <!-- Add Item Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:text="Add Item" />
 
-        <!-- Delete Item -->
+        <!-- Delete Item Section -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -156,11 +156,47 @@
             android:layout_height="wrap_content"
             android:text="Delete Item" />
 
+        <!-- User Management Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Management"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <Spinner
+            android:id="@+id/user_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp" />
+        <Spinner
+            android:id="@+id/role_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/search_user_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search User"
+            android:minHeight="48dp" />
+
+        <Button
+            android:id="@+id/set_user_role_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set User Role" />
+
+        <!-- Sign Out Button -->
         <Button
             android:id="@+id/sign_out_admin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SIGN OUT"
+            android:text="Sign Out"
             android:layout_marginTop="16dp"/>
 
     </LinearLayout>

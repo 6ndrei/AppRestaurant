@@ -1,5 +1,6 @@
 package com.example.apprestaurant.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,26 +18,32 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
-    List<CartModel> list;
+    private List<CartModel> list;
+    private Context mContext;
 
-    public CartAdapter(List<CartModel> list) {
+    public CartAdapter(Context context, List<CartModel> list) {
+        this.mContext = context;
         this.list = list;
+    }
+
+    public void setList(List<CartModel> newList) {
+        this.list = newList;
     }
 
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.cart_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
         CartModel model = list.get(position);
-        Glide.with(holder.imageView.getContext())
-                .load(model.getImage()) // Assuming image is a URL string
-                .placeholder(R.drawable.placeholder_image) // Placeholder image
-                .error(R.drawable.error_image) // Error image
+        Glide.with(mContext)
+                .load(model.getImage())
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
                 .into(holder.imageView);
         holder.name.setText(model.getName());
         holder.price.setText(model.getPrice());

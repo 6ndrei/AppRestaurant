@@ -51,6 +51,8 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        root.findViewById(R.id.loadingPanelDashboard).setVisibility(View.GONE);
+
         CategRec = root.findViewById(R.id.RecViewCateg);
         ItemCategRec = root.findViewById(R.id.RecViewItemCateg);
 
@@ -129,9 +131,15 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
     }
 
     private void loadCategoriesFromFirebase() {
+        if (binding != null && binding.loadingPanelDashboard != null) {
+            binding.loadingPanelDashboard.setVisibility(View.VISIBLE);
+        }
         firestore.collection("categories").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (binding != null && binding.loadingPanelDashboard != null) {
+                    binding.loadingPanelDashboard.setVisibility(View.GONE);
+                }
                 if (task.isSuccessful()) {
                     categModelList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
@@ -153,12 +161,18 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
         });
     }
     private void loadItemsForCategory(String categoryId) {
+        if (binding != null && binding.loadingPanelDashboard != null) {
+            binding.loadingPanelDashboard.setVisibility(View.VISIBLE);
+        }
         firestore.collection("items")
                 .whereEqualTo("categoryId", categoryId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (binding != null && binding.loadingPanelDashboard != null) {
+                            binding.loadingPanelDashboard.setVisibility(View.GONE);
+                        }
                         if (task.isSuccessful()) {
                             itemCategModelList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {

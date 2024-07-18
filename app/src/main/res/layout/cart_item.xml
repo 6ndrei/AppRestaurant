@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="320dp"
+    android:layout_width="match_parent"
     android:layout_height="150dp"
     android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp"
@@ -16,9 +16,9 @@
             android:id="@+id/detailed_img"
             android:layout_width="120dp"
             android:layout_height="122dp"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="31dp"
             android:layout_marginTop="14dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="29dp"
             android:layout_marginBottom="14dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dinner"
@@ -26,22 +26,24 @@
             app:layout_constraintEnd_toStartOf="@+id/CartItemName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:riv_corner_radius="8dp" />
 
         <TextView
             android:id="@+id/CartItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="139dp"
+            android:layout_marginEnd="181dp"
             android:layout_marginBottom="107dp"
             android:text="nume"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/detailed_img"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/cartItemPrice"
@@ -53,19 +55,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/RONcart"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="19dp"
             android:layout_height="19dp"
-            android:layout_marginStart="116dp"
+            android:layout_marginStart="181dp"
             android:layout_marginTop="117dp"
             android:layout_marginBottom="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cartItemPrice"
             app:layout_constraintStart_toEndOf="@+id/detailed_img"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/money" />
 
         <TextView

@@ -43,6 +43,10 @@
             android:exported="false"
             android:label="Admin"/>
         <activity
+            android:name=".OrdersActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".ActivityCount"
             android:screenOrientation="portrait"
             android:exported="false" />

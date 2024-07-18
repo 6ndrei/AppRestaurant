@@ -2,27 +2,31 @@ package com.example.apprestaurant;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.apprestaurant.ui.dashboard.DashboardFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,14 +37,20 @@ public class LoginActivity extends AppCompatActivity {
     private TextView ContinueAsGuest;
     private FirebaseAuth mAuth;
     private SharedPreferences sharedPreferences;
+    private FirebaseFirestore db; // Declarația pentru FirebaseFirestore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        // Inițializarea FirebaseFirestore
+        db = FirebaseFirestore.getInstance();
 
         // Obține referința la SharedPreferences și curăță preferințele
         sharedPreferences = getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
@@ -128,16 +138,40 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToMainActivity() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        findViewById(R.id.cardView).setVisibility(View.GONE);
+        findViewById(R.id.Register).setVisibility(View.GONE);
+        findViewById(R.id.ContinueAsGuest).setVisibility(View.GONE);
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         if (currentUser != null) {
-            String email = currentUser.getEmail();
-            if (email != null && email.equals("admin@admin.com")) {
-                Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-            finish();
+            String userId = currentUser.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    String role = documentSnapshot.getString("role");
+
+                    if (role != null) {
+                        if (role.equals("admin")) {
+                            Intent adminIntent = new Intent(LoginActivity.this, AdminActivity.class);
+                            startActivity(adminIntent);
+                        } else if (role.equals("employee")) {
+                            Intent employeeIntent = new Intent(LoginActivity.this, OrdersActivity.class);
+                            startActivity(employeeIntent);
+                        } else {
+                            Intent defaultIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(defaultIntent);
+                        }
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Rolul utilizatorului nu este definit", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Documentul utilizatorului nu există", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(e -> {
+                Toast.makeText(LoginActivity.this, "Eroare la citirea rolului utilizatorului din Firestore", Toast.LENGTH_SHORT).show();
+                Log.e("LoginActivity", "Error fetching user role from Firestore", e);
+            });
         }
     }
 
