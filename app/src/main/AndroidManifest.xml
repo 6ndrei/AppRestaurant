@@ -19,7 +19,6 @@
             android:screenOrientation="portrait"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
-            android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="true"
             tools:replace="android:screenOrientation">
 

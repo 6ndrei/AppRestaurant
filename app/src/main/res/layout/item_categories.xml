@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:text="Pizza"
             android:textAlignment="center"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/colorText"
             android:textSize="15sp"
             android:maxLines="1"
             android:autoSizeTextType="uniform" />

@@ -22,4 +22,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Table Number" />
+
+    <TextView
+        android:id="@+id/OrderStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stare" />
+
+    <Spinner
+        android:id="@+id/UpdateOrderSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/UpdateOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actualizeaza" />
+
 </LinearLayout>

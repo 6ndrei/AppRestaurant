@@ -3,6 +3,7 @@ package com.example.apprestaurant;
 import static android.content.ContentValues.TAG;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.example.apprestaurant.models.CartModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,6 +41,8 @@ public class CartFragment extends Fragment {
     private TextView totalPrice;
     private FirebaseFirestore firestore;
     private DocumentReference ordersRef;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
 
     public CartFragment() {}
 
@@ -57,16 +62,12 @@ public class CartFragment extends Fragment {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
                 final CartModel deletedItem = list.get(position);
-
-                // Remove item from list
                 list.remove(position);
                 cartAdapter.notifyItemRemoved(position);
                 double totalPriceValue = calculateTotalPrice();
                 totalPrice.setText(String.valueOf(totalPriceValue));
-
-                // Show undo Snackbar
                 Snackbar snackbar = Snackbar
-                        .make(recyclerView, "Item was removed from the list.", Snackbar.LENGTH_LONG)
+                        .make(recyclerView, "Produsul a fost sters din cos.", Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -76,7 +77,7 @@ public class CartFragment extends Fragment {
                                 recyclerView.scrollToPosition(position);
                                 calculateAndShowTotalPrice();
                                 double totalPriceValue = calculateTotalPrice();
-                                totalPrice.setText(String.valueOf(totalPriceValue));// Recalculate total price after undo
+                                totalPrice.setText(String.valueOf(totalPriceValue));
                             }
                         });
                 snackbar.setActionTextColor(Color.YELLOW);
@@ -94,7 +95,6 @@ public class CartFragment extends Fragment {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle button click to submit order
                 syncCartWithFirestore();
                 totalPrice.setText("0");
             }
@@ -118,7 +118,6 @@ public class CartFragment extends Fragment {
 
     private void syncCartWithFirestore() {
         if (list.isEmpty()) {
-            // Handle case where list is empty (optional: log a message or perform appropriate action)
             return;
         }
 
@@ -132,10 +131,12 @@ public class CartFragment extends Fragment {
             itemsNames.append(item.getName()).append(", ");
         }
         String items = itemsNames.toString().trim();
-
         String tableNumber = list.get(0).getTableNumber(); // Access table number safely
+        String status = "In Asteptare";
+        String user = currentUser.getEmail();
 
-        Order order = new Order(items, totalPriceValue, tableNumber);
+        Order order = new Order(items, totalPriceValue, tableNumber, status, user);
+
 
         ordersRef.set(order)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -169,19 +170,27 @@ public class CartFragment extends Fragment {
         private String items;
         private double totalPrice;
         private String tableNumber;
-
-        // Required no-argument constructor
+        private String status;
+        private String user;
         public Order() {
-            // Default constructor required for Firestore serialization
         }
 
-        public Order(String items, double totalPrice, String tableNumber) {
+        public Order(String items, double totalPrice, String tableNumber, String status, String user) {
             this.items = items;
             this.totalPrice = totalPrice;
             this.tableNumber = tableNumber;
+            this.status = status;
+            this.user = user;
         }
 
-        // Getter and setters
+        public String getUser() { return user; }
+
+        public void setUser(String user) { this.user = user; }
+
+        public String getStatus() { return status; }
+
+        public void setStatus(String status) { this.status = status; }
+
         public String getItems() {
             return items;
         }

@@ -7,11 +7,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,21 +17,34 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
     private Context mContext;
     private Paint mClearPaint;
+    private Paint mTextPaint;
     private ColorDrawable mBackground;
     private int backgroundColor;
-    private Drawable deleteDrawable;
+    private String mText;
     private int intrinsicWidth;
     private int intrinsicHeight;
 
     public SwipeToDeleteCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
-        backgroundColor = Color.parseColor("#b80f0a");
+        backgroundColor = Color.parseColor("#510404");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        deleteDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_delete); // Assume delete image is from resources
-        intrinsicWidth = deleteDrawable.getIntrinsicWidth();
-        intrinsicHeight = deleteDrawable.getIntrinsicHeight();
+
+        // Configurare Paint pentru text
+        mTextPaint = new Paint();
+        mTextPaint.setColor(Color.WHITE); // Culoarea textului alb
+        mTextPaint.setTextSize(48); // Dimensiunea textului, ajustează după nevoie
+        mTextPaint.setAntiAlias(true); // Pentru claritate
+        mTextPaint.setTextAlign(Paint.Align.CENTER); // Aliniere centrală
+
+        // Textul care va fi afișat
+        mText = "Sterge";
+
+        // Estimare dimensiuni text
+        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+        intrinsicWidth = (int) (mTextPaint.measureText(mText) + 20); // +20 pentru margini
+        intrinsicHeight = (int) (fontMetrics.bottom - fontMetrics.top);
     }
 
     @Override
@@ -65,14 +76,11 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
         mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
         mBackground.draw(c);
 
-        int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
-        int deleteIconMargin = (itemHeight - intrinsicHeight) / 2;
-        int deleteIconLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
-        int deleteIconRight = itemView.getRight() - deleteIconMargin;
-        int deleteIconBottom = deleteIconTop + intrinsicHeight;
+        // Calculare poziționare text
+        float textX = itemView.getRight() - (intrinsicWidth);
+        float textY = itemView.getTop() + (itemHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2);
 
-        deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-        deleteDrawable.draw(c);
+        c.drawText(mText, textX, textY, mTextPaint);
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }

@@ -10,8 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="1dp">
+        android:layout_height="match_parent">
 
 
         <ImageView
@@ -42,10 +41,10 @@
                 android:layout_marginEnd="28dp"
                 android:gravity="start"
                 android:text="Product Name"
+                android:fontFamily="@font/montserrat"
                 android:textColor="@android:color/white"
                 android:textDirection="ltr"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/timing"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,13 +67,13 @@
                 android:id="@+id/money"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="170dp"
+                android:layout_marginStart="114dp"
                 android:layout_marginTop="58dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/money"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/price"
-                app:layout_constraintStart_toEndOf="@+id/timing"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -85,11 +84,10 @@
                 android:layout_marginTop="26dp"
                 android:layout_marginBottom="8dp"
                 android:text="WaitingTime"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorText"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/money"
+                app:layout_constraintEnd_toStartOf="@+id/textView2"
                 app:layout_constraintStart_toEndOf="@+id/waiting"
                 app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
@@ -126,6 +124,17 @@
                 app:layout_constraintStart_toEndOf="@+id/price"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:text="minute"
+                android:textColor="@color/colorText"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/timing" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

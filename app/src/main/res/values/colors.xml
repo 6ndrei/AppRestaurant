@@ -7,8 +7,27 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#B0B0B0</color>
         <color name="light_font">#FBFBFB</color>
         <color name="grey_font">#ff9e9e9e</color>
         <color name="text_shadow">#7F000000</color>
         <color name="text_shadow_white">#FFFFFF</color>
+    <!-- Culoarea Principală -->
+    <color name="colorPrimary">#4B2929</color>
+
+    <!-- Nuanțe mai Întunecate -->
+    <color name="colorDark1">#3C1F1F</color>
+    <color name="colorDark2">#2E1616</color>
+
+    <!-- Nuanțe mai Deschise -->
+    <color name="colorLight1">#6D4343</color>
+    <color name="colorLight2">#7F5F5F</color>
+
+    <!-- Culori Complementare -->
+    <color name="colorComplementary1">#4B7A29</color>
+    <color name="colorComplementary2">#4B7A7A</color>
+
+    <!-- Culori pentru Text și Accente -->
+    <color name="colorText">#FFFFFF</color>
+    <color name="colorAccent">#FFC107</color>
 </resources>
