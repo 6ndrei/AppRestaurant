@@ -27,23 +27,23 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     public SwipeToDeleteCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
-        backgroundColor = Color.parseColor("#510404");
+        backgroundColor = Color.parseColor("#ff0000");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
         // Configurare Paint pentru text
         mTextPaint = new Paint();
-        mTextPaint.setColor(Color.WHITE); // Culoarea textului alb
-        mTextPaint.setTextSize(48); // Dimensiunea textului, ajustează după nevoie
-        mTextPaint.setAntiAlias(true); // Pentru claritate
-        mTextPaint.setTextAlign(Paint.Align.CENTER); // Aliniere centrală
+        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(48);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
 
         // Textul care va fi afișat
         mText = "Sterge";
 
         // Estimare dimensiuni text
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        intrinsicWidth = (int) (mTextPaint.measureText(mText) + 20); // +20 pentru margini
+        intrinsicWidth = (int) (mTextPaint.measureText(mText) + 20);
         intrinsicHeight = (int) (fontMetrics.bottom - fontMetrics.top);
     }
 
@@ -76,7 +76,6 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
         mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
         mBackground.draw(c);
 
-        // Calculare poziționare text
         float textX = itemView.getRight() - (intrinsicWidth);
         float textY = itemView.getTop() + (itemHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2);
 

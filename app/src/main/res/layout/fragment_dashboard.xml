@@ -5,109 +5,184 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment"
-    android:background="@drawable/gradient_background">
+    android:id="@+id/dashboardConstraint"
+    android:background="@drawable/gradient_animation">
 
-
-    <ImageView
-        android:id="@+id/blurredbg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/blurredbgdashboard"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
-
-    <Button
-        android:id="@+id/ScaneazaButon2"
-        android:layout_width="256dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="78dp"
-        android:layout_marginBottom="160dp"
-        android:text="Scaneaza"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextQR" />
-
-    <TextView
-        android:id="@+id/TextQR"
-        android:layout_width="348dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/rubik_black"
-        android:text="Scaneaza codul QR de la masa pentru a incepe"
-        android:textAlignment="center"
-        android:textColor="#ADFFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/ScaneazaButon2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scanQRCODE"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/scanQRCODE"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:layout_marginStart="77dp"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="78dp"
-        android:layout_marginBottom="35dp"
-        android:src="@drawable/qrcode"
-        app:layout_constraintBottom_toTopOf="@+id/TextQR"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecViewCateg"
-        android:layout_width="401dp"
-        android:layout_height="124dp"
-        android:layout_margin="6dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1"
-        tools:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecViewItemCateg"
-        android:layout_width="match_parent"
-        android:layout_height="540dp"
-        android:layout_margin="6dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="69dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecViewCateg"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="gone" />
-
-    <RelativeLayout
-        android:id="@+id/loadingPanelDashboard"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/qrCodeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:elevation="10dp">
+        tools:visibility="visible">
 
-        <ProgressBar
+        <ImageView
+            android:id="@+id/blurredbg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
-    </RelativeLayout>
+            android:scaleType="centerCrop"
+            android:src="@drawable/blurredbgdashboard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#88000000" />
+
+        <Button
+            android:id="@+id/ScaneazaButon2"
+            android:layout_width="256dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="77dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginEnd="78dp"
+            android:layout_marginBottom="160dp"
+            android:background="@drawable/button_selector"
+            android:text="Scaneaza"
+            android:textColor="@color/colorText"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TextQR"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/TextQR"
+            android:layout_width="348dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/poppins"
+            android:text="Scaneaza codul QR de la masa pentru a incepe"
+            android:textAlignment="center"
+            android:textColor="@color/colorText"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/ScaneazaButon2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scanQRCODE"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/scanQRCODE"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:layout_marginStart="77dp"
+            android:layout_marginTop="144dp"
+            android:layout_marginEnd="78dp"
+            android:layout_marginBottom="35dp"
+            android:src="@drawable/qrcode"
+            app:layout_constraintBottom_toTopOf="@+id/TextQR"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/categLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecViewCateg"
+            android:layout_width="401dp"
+            android:layout_height="124dp"
+            android:layout_margin="6dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_weight="1"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecViewItemCateg"
+            android:layout_width="match_parent"
+            android:layout_height="540dp"
+            android:layout_margin="6dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="69dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="70dp"
+            android:paddingTop="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RecViewCateg"
+            app:layout_constraintVertical_bias="0.0"
+            tools:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/loadingPanelDashboard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            android:gravity="center"
+            tools:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/bananafont"
+            android:gravity="center"
+            android:text="Bine ai venit, cu ce te servim?"
+            android:textColor="@color/colorText"
+            android:textSize="35sp"
+            app:layout_constraintBottom_toTopOf="@+id/view2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="348dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="57dp"
+            android:background="@color/colorLight1"
+            app:layout_constraintBottom_toTopOf="@+id/RecViewCateg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="348dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorLight1"
+            app:layout_constraintBottom_toTopOf="@+id/RecViewItemCateg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RecViewCateg" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

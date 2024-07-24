@@ -7,16 +7,16 @@
         android:id="@+id/navigation_catalog"
         android:icon="@drawable/dashboard"
         android:title="Catalog"
-        app:cnb_iconColor="#f905"
-        app:cnb_textColor="#f905"
+        app:cnb_iconColor="#9643"
+        app:cnb_textColor="#9643"
         />
 
     <item
         android:id="@+id/navigation_cart"
         android:icon="@drawable/cart"
         android:title="Cos"
-        app:cnb_iconColor="#5235"
-        app:cnb_textColor="#5235"
+        app:cnb_iconColor="#52964335"
+        app:cnb_textColor="#52964335"
         />
 
     <item

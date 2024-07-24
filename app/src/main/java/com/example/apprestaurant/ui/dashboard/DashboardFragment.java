@@ -2,16 +2,19 @@ package com.example.apprestaurant.ui.dashboard;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,12 +48,18 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
     private CategAdapter categAdapter;
     private ItemCategAdapter itemCategAdapter;
     private FirebaseFirestore firestore;
+    private AnimationDrawable animationDrawable;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        ConstraintLayout constraintLayout = root.findViewById(R.id.dashboardConstraint);
+        animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(10);
+        animationDrawable.setExitFadeDuration(2500);
 
         root.findViewById(R.id.loadingPanelDashboard).setVisibility(View.GONE);
 
@@ -78,15 +87,12 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
         boolean isQRScanned = sharedPreferences.getBoolean("isQRScanned", false);
 
         if (isQRScanned) {
-            binding.ScaneazaButon2.setVisibility(View.GONE);
-            binding.TextQR.setVisibility(View.GONE);
-            binding.blurredbg.setVisibility(View.GONE);
-            binding.scanQRCODE.setVisibility(View.GONE);
-            CategRec.setVisibility(View.VISIBLE);
-            ItemCategRec.setVisibility(View.VISIBLE);
+            binding.qrCodeLayout.setVisibility(View.GONE);
+            binding.loadingPanelDashboard.setVisibility(View.VISIBLE);
+            binding.categLayout.setVisibility(View.VISIBLE);
+            binding.loadingPanelDashboard.setVisibility(View.GONE);
         } else {
-            CategRec.setVisibility(View.GONE);
-            ItemCategRec.setVisibility(View.GONE);
+            binding.categLayout.setVisibility(View.GONE);
             binding.ScaneazaButon2.setOnClickListener(view -> startQRScanner());
             binding.ScaneazaButon2.setText("Scanează");
         }
@@ -112,18 +118,24 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
                 Toast.makeText(getActivity(), "Scanare anulată", Toast.LENGTH_SHORT).show();
             } else {
                 if (result.getFormatName().equals("QR_CODE")) {
-                    qrContent = result.getContents(); // Update qrContent for the session
-                    Toast.makeText(getActivity(), "Cod QR scanat: " + qrContent, Toast.LENGTH_SHORT).show();
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("qrContent", qrContent);
-                    editor.putBoolean("isQRScanned", true);
-                    editor.apply();
-                    binding.ScaneazaButon2.setVisibility(View.GONE);
-                    binding.TextQR.setVisibility(View.GONE);
-                    binding.blurredbg.setVisibility(View.GONE);
-                    binding.scanQRCODE.setVisibility(View.GONE);
-                    CategRec.setVisibility(View.VISIBLE);
-                    ItemCategRec.setVisibility(View.VISIBLE);
+                    qrContent = result.getContents();
+                    try {
+                        int qrNumber = Integer.parseInt(qrContent);
+                        if (qrNumber >= 1 && qrNumber <= 15) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("qrContent", qrContent);
+                            editor.putBoolean("isQRScanned", true);
+                            editor.apply();
+                            binding.loadingPanelDashboard.setVisibility(View.VISIBLE);
+                            binding.qrCodeLayout.setVisibility(View.GONE);
+                            binding.categLayout.setVisibility(View.VISIBLE);
+                            binding.loadingPanelDashboard.setVisibility(View.GONE);
+                        } else {
+                            Toast.makeText(getActivity(), "Cod invalid", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(getActivity(), "Cod invalid", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Codul scanat nu este un QR", Toast.LENGTH_SHORT).show();
                 }
@@ -216,4 +228,24 @@ public class DashboardFragment extends Fragment implements UpdateItemCateg {
         super.onDestroyView();
         binding = null;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Pornește animația
+        if (animationDrawable != null && !animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Oprește animația
+        if (animationDrawable != null && animationDrawable.isRunning()) {
+            animationDrawable.stop();
+        }
+    }
 }
+
+
+

@@ -53,6 +53,9 @@ public class AdminActivity extends AppCompatActivity {
 
     private static final String[] ROLES = {"user", "employee", "admin"};
 
+    private ArrayList<String> categoryIds;
+    private ArrayList<String> categoryNames;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,8 @@ public class AdminActivity extends AppCompatActivity {
         userNames = new ArrayList<>();
         userIds = new ArrayList<>();
         rolesList = new ArrayList<>();
+        categoryIds = new ArrayList<>();
+        categoryNames = new ArrayList<>();
 
         userAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, userNames);
         userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -127,6 +132,7 @@ public class AdminActivity extends AppCompatActivity {
         setUserRoleButton.setOnClickListener(v -> {
             String searchName = searchUserEditText.getText().toString().trim();
             int selectedIndex = userSpinner.getSelectedItemPosition();
+
             if (!TextUtils.isEmpty(searchName)) {
                 setSelectedUserByName(searchName);
             } else if (selectedIndex != -1) {
@@ -146,6 +152,9 @@ public class AdminActivity extends AppCompatActivity {
             String userName = userNames.get(i);
             if (userName.toLowerCase().contains(searchName.toLowerCase())) {
                 userSpinner.setSelection(i);
+                String selectedUserId = userIds.get(i);
+                String selectedUserRole = roleSpinner.getSelectedItem().toString();
+                updateRole(selectedUserId, selectedUserRole);
                 return;
             }
         }
@@ -168,8 +177,8 @@ public class AdminActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        ArrayList<String> categoryIds = new ArrayList<>();
-                        ArrayList<String> categoryNames = new ArrayList<>();
+                        categoryIds.clear();
+                        categoryNames.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String id = document.getId();
                             String name = document.getString("name");
@@ -279,28 +288,40 @@ public class AdminActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> category = new HashMap<>();
-        category.put("name", name);
+        if (categoryImageUri != null) {
+            StorageReference fileReference = storage.getReference().child("category_images/" + id);
+            fileReference.putFile(categoryImageUri)
+                    .addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String imageUrl = uri.toString();
 
-        firestore.collection("categories")
-                .document(id)
-                .set(category)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(AdminActivity.this, "Category added successfully", Toast.LENGTH_SHORT).show();
-                    categoryIdEditText.setText("");
-                    categoryNameEditText.setText("");
-                    categoryImageView.setImageDrawable(null);
-                    loadCategories(); // Reîncarcă categoriile pentru a reflecta adăugarea noii categorii
-                })
-                .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error adding category", Toast.LENGTH_SHORT).show());
+                        Map<String, Object> category = new HashMap<>();
+                        category.put("name", name);
+                        category.put("image", imageUrl);
+
+                        firestore.collection("categories")
+                                .document(id)
+                                .set(category)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(AdminActivity.this, "Category added successfully", Toast.LENGTH_SHORT).show();
+                                    categoryIdEditText.setText("");
+                                    categoryNameEditText.setText("");
+                                    categoryImageView.setImageDrawable(null);
+                                    loadCategories(); // Reîncarcă categoriile pentru a reflecta adăugarea noii categorii
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error adding category", Toast.LENGTH_SHORT).show());
+                    }))
+                    .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error uploading image", Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(this, "Please select an image for the category", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void addItem() {
         String name = itemNameEditText.getText().toString().trim();
         String price = itemPriceEditText.getText().toString().trim();
         String timing = itemTimingEditText.getText().toString().trim();
-        String categoryId = categorySpinner.getSelectedItem() != null ? categorySpinner.getSelectedItem().toString() : "";
-        String imageName = itemImageUri != null ? itemImageUri.getLastPathSegment() : "";
+        int selectedCategoryIndex = categorySpinner.getSelectedItemPosition();
+        String categoryId = selectedCategoryIndex != -1 ? categoryIds.get(selectedCategoryIndex) : "";
 
         if (TextUtils.isEmpty(name)) {
             itemNameEditText.setError("Required");
@@ -317,39 +338,54 @@ public class AdminActivity extends AppCompatActivity {
             return;
         }
 
-        Map<String, Object> item = new HashMap<>();
-        item.put("name", name);
-        item.put("price", price);
-        item.put("timing", timing);
-        item.put("categoryId", categoryId);
-        item.put("imageName", imageName);
+        if (itemImageUri != null) {
+            StorageReference fileReference = storage.getReference().child("item_images/" + name);
+            fileReference.putFile(itemImageUri)
+                    .addOnSuccessListener(taskSnapshot -> fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String imageUrl = uri.toString();
 
-        firestore.collection("items")
-                .document(name)
-                .set(item)
-                .addOnSuccessListener(aVoid -> {
-                    uploadItemImage(itemImageUri, name);
-                    Toast.makeText(AdminActivity.this, "Item added successfully", Toast.LENGTH_SHORT).show();
-                    itemNameEditText.setText("");
-                    itemPriceEditText.setText("");
-                    itemTimingEditText.setText("");
-                    itemImageView.setImageDrawable(null);
-                    loadItems(); // Reîncarcă articolele pentru a reflecta adăugarea noului articol
-                })
-                .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error adding item", Toast.LENGTH_SHORT).show());
+                        Map<String, Object> item = new HashMap<>();
+                        item.put("name", name);
+                        item.put("price", price);
+                        item.put("timing", timing);
+                        item.put("categoryId", categoryId);
+                        item.put("image", imageUrl);
+
+                        firestore.collection("items")
+                                .document(name)
+                                .set(item)
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(AdminActivity.this, "Item added successfully", Toast.LENGTH_SHORT).show();
+                                    itemNameEditText.setText("");
+                                    itemPriceEditText.setText("");
+                                    itemTimingEditText.setText("");
+                                    itemImageView.setImageDrawable(null);
+                                    loadItems(); // Reîncarcă articolele pentru a reflecta adăugarea noului articol
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error adding item", Toast.LENGTH_SHORT).show());
+                    }))
+                    .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error uploading image", Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(this, "Please select an image for the item", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void deleteCategory() {
-        String selectedCategory = deleteCategorySpinner.getSelectedItem() != null ? deleteCategorySpinner.getSelectedItem().toString() : "";
+        int selectedCategoryIndex = deleteCategorySpinner.getSelectedItemPosition();
+        String selectedCategoryId = selectedCategoryIndex != -1 ? categoryIds.get(selectedCategoryIndex) : "";
 
-        firestore.collection("categories")
-                .document(selectedCategory)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(AdminActivity.this, "Category deleted successfully", Toast.LENGTH_SHORT).show();
-                    loadCategories(); // Reîncarcă categoriile pentru a reflecta ștergerea categoriei
-                })
-                .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error deleting category", Toast.LENGTH_SHORT).show());
+        if (!TextUtils.isEmpty(selectedCategoryId)) {
+            firestore.collection("categories")
+                    .document(selectedCategoryId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(AdminActivity.this, "Category deleted successfully", Toast.LENGTH_SHORT).show();
+                        loadCategories(); // Reîncarcă categoriile pentru a reflecta ștergerea categoriei
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(AdminActivity.this, "Error deleting category", Toast.LENGTH_SHORT).show());
+        } else {
+            Toast.makeText(AdminActivity.this, "Please select a category to delete", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void deleteItem() {
@@ -359,7 +395,7 @@ public class AdminActivity extends AppCompatActivity {
                 .whereEqualTo("name", selectedItem)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             document.getReference().delete();
                         }
@@ -369,18 +405,5 @@ public class AdminActivity extends AppCompatActivity {
                         Toast.makeText(AdminActivity.this, "Error deleting item", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    private void uploadItemImage(Uri imageUri, String itemName) {
-        if (imageUri != null) {
-            StorageReference fileReference = storage.getReference().child("item_images/" + itemName);
-            fileReference.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        // Successfully uploaded image
-                    })
-                    .addOnFailureListener(e -> {
-                        // Failed to upload image
-                    });
-        }
     }
 }

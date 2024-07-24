@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // Inițializarea FirebaseFirestore
         db = FirebaseFirestore.getInstance();
 
         // Obține referința la SharedPreferences și curăță preferințele
