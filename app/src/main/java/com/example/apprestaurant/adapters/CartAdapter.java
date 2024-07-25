@@ -46,7 +46,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 .error(R.drawable.error_image)
                 .into(holder.imageView);
         holder.name.setText(model.getName());
-        holder.price.setText(model.getPrice());
+        holder.price.setText(model.getPrice() + " RON");
     }
 
     @Override

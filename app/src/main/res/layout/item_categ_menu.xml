@@ -36,14 +36,16 @@
 
             <TextView
                 android:id="@+id/item_name"
-                android:layout_width="331dp"
+                android:layout_width="310dp"
                 android:layout_height="26dp"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="28dp"
-                android:gravity="start"
-                android:text="Product Name"
+                android:layout_marginEnd="43dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/poppins"
+                android:gravity="start"
+                android:maxLines="1"
+                android:text="Product Name"
                 android:textColor="@android:color/white"
                 android:textDirection="ltr"
                 android:textSize="18sp"
@@ -69,13 +71,14 @@
                 android:id="@+id/money"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="114dp"
+                android:layout_marginStart="169dp"
                 android:layout_marginTop="58dp"
+                android:layout_marginEnd="1dp"
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/money"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/price"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toEndOf="@+id/timing"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -89,7 +92,6 @@
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView2"
                 app:layout_constraintStart_toEndOf="@+id/waiting"
                 app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
@@ -98,45 +100,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="58dp"
-                android:layout_marginEnd="1dp"
+                android:layout_marginEnd="47dp"
                 android:layout_marginBottom="8dp"
                 android:text="10"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/RON"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/money"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/RON"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="58dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="RON"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/price"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:text="minute"
-                android:textColor="@color/colorText"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/timing" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

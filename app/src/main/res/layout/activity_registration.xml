@@ -61,9 +61,21 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
-                android:hint="Username"
+                android:hint="E-mail"
                 android:inputType="text"
                 android:maxLines="1"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background" />
+
+            <EditText
+                android:id="@+id/RegisterName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_edittext"
+                android:drawablePadding="8dp"
+                android:hint="Nume"
+                android:inputType="text"
                 android:padding="8dp"
                 android:textColorHighlight="@color/cardview_dark_background" />
 

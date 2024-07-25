@@ -24,6 +24,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private EditText usernameRegister;
     private EditText passwordRegister;
+    private EditText nameRegister;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -37,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         usernameRegister = findViewById(R.id.RegisterUsername);
         passwordRegister = findViewById(R.id.RegisterPassword);
+        nameRegister = findViewById(R.id.RegisterName);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -45,10 +47,15 @@ public class RegistrationActivity extends AppCompatActivity {
     public void registerUser(View view) {
         String username = usernameRegister.getText().toString().trim();
         String password = passwordRegister.getText().toString().trim();
+        String name = nameRegister.getText().toString().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Introdu numele de utilizator și parola", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Introdu e-mail-ul și parola", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Introdu numele", Toast.LENGTH_SHORT).show();
         }
 
         mAuth.createUserWithEmailAndPassword(username, password)
@@ -56,7 +63,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         // Adăugăm utilizatorul în Firestore și îi atribuim un rol
-                        addUserToFirestore(user.getUid(), username, "user");
+                        addUserToFirestore(user.getUid(), username, "user", name);
                     } else {
                         Toast.makeText(RegistrationActivity.this, "Înregistrare eșuată", Toast.LENGTH_SHORT).show();
                         Log.e("RegistrationActivity", "Error creating user", task.getException());
@@ -64,10 +71,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-    private void addUserToFirestore(String userId, String username, String role) {
+    private void addUserToFirestore(String userId, String username, String role, String name) {
         Map<String, Object> user = new HashMap<>();
         user.put("username", username);
-        user.put("role", role); // Adăugăm câmpul pentru rol
+        user.put("role", role);
+        user.put("name", name);
 
         db.collection("users").document(userId)
                 .set(user)

@@ -249,7 +249,8 @@ public class CartFragment extends Fragment {
 
                     for (DocumentSnapshot document : snapshots.getDocuments()) {
                         Order order = document.toObject(Order.class);
-                        if (order != null) {
+                        String user = order.getUser();
+                        if (order != null && currentUser.getEmail().equals(user)) {
                             String orderId = document.getId();
                             String status = order.getStatus();
                             String time = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())

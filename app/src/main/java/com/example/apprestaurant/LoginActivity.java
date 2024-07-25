@@ -28,6 +28,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameLogin;
@@ -37,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView ContinueAsGuest;
     private FirebaseAuth mAuth;
     private SharedPreferences sharedPreferences;
-    private FirebaseFirestore db; // Declarația pentru FirebaseFirestore
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +56,31 @@ public class LoginActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Obține referința la SharedPreferences și curăță preferințele
         sharedPreferences = getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
         clearSharedPreferences();
 
         if (currentUser != null) {
             if (currentUser.isAnonymous()) {
-                mAuth.signOut();
+                String userId = currentUser.getUid();
+                currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("LoginActivity", "contul anonim a fost sters cu succes");
+                            db.collection("users").document(userId)
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("LoginActivity", "documentul a fost sters din firestore");
+                                        mAuth.signOut();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("LoginActivity", "documentul nu s-a putut sterge din firestore", e);
+                                    });
+                        } else {
+                            Log.e("LoginActivity", "nu s-a putut sterge", task.getException());
+                        }
+                    }
+                });
             } else {
                 navigateToMainActivity();
             }
@@ -129,12 +150,50 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            navigateToMainActivity();
+                            assignRoleToAnonymousUser();
                         } else {
                             Toast.makeText(LoginActivity.this, "Eroare la autentificarea ca vizitator", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void assignRoleToAnonymousUser() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+
+            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (!documentSnapshot.exists()) {
+                    // Setăm rolul utilizatorului anonim la "User"
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("role", "User");
+
+                    userRef.set(user).addOnSuccessListener(aVoid -> {
+                        navigateToMainActivity();
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(LoginActivity.this, "Eroare la setarea rolului utilizatorului anonim", Toast.LENGTH_SHORT).show();
+                        Log.e("LoginActivity", "Error setting role for anonymous user", e);
+                    });
+                } else {
+                    String role = documentSnapshot.getString("role");
+                    if (role == null) {
+                        userRef.update("role", "User").addOnSuccessListener(aVoid -> {
+                            navigateToMainActivity();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(LoginActivity.this, "Eroare la actualizarea rolului utilizatorului anonim", Toast.LENGTH_SHORT).show();
+                            Log.e("LoginActivity", "Error updating role for anonymous user", e);
+                        });
+                    } else {
+                        navigateToMainActivity();
+                    }
+                }
+            }).addOnFailureListener(e -> {
+                Toast.makeText(LoginActivity.this, "Eroare la verificarea utilizatorului anonim în Firestore", Toast.LENGTH_SHORT).show();
+                Log.e("LoginActivity", "Error fetching anonymous user from Firestore", e);
+            });
+        }
     }
 
     private void navigateToMainActivity() {
@@ -175,6 +234,7 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
+
 
 
     public void openRegistrationActivity() {

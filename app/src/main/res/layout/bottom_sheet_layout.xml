@@ -33,8 +33,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        android:layout_height="300dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="0dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/bottom_sheet_img"
@@ -43,27 +44,26 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginBottom="23dp"
+            android:layout_marginBottom="68dp"
             android:scaleType="centerCrop"
             android:src="@drawable/dinner"
-            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintBottom_toTopOf="@+id/minusbutton"
             app:layout_constraintEnd_toStartOf="@+id/OrderName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.272"
             app:riv_corner_radius="10dp" />
 
         <TextView
             android:id="@+id/OrderName"
             android:layout_width="253dp"
             android:layout_height="110dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="14dp"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="56dp"
             android:fontFamily="@font/montserrat"
             android:text="nume"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintBottom_toTopOf="@+id/plusbutton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/bottom_sheet_img"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,8 +72,8 @@
             android:id="@+id/OrderAddLinear"
             android:layout_width="411dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             android:background="@color/colorDark1"
             android:orientation="vertical"
             android:padding="16dp"
@@ -93,9 +93,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="16dp"
-                    android:textColor="@color/colorText"
                     android:layout_marginBottom="12dp"
                     android:text="RON"
+                    android:textColor="@color/colorText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/OrderPrice"
@@ -108,8 +108,8 @@
                     android:layout_marginStart="203dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorText"
                     android:text="pret"
+                    android:textColor="@color/colorText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/RONcart"
                     app:layout_constraintStart_toEndOf="@+id/textView4"
@@ -122,13 +122,67 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="9dp"
                     android:layout_marginBottom="12dp"
-                    android:textColor="@color/colorText"
                     android:text="Adauga In Cos"
+                    android:textColor="@color/colorText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/minusbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="41dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="23dp"
+            android:background="@drawable/button_bg"
+            android:padding="10dp"
+            android:text="-"
+            android:textColor="@color/colorText"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintEnd_toStartOf="@+id/plusbutton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OrderName"
+            app:layout_constraintVertical_bias="0.0"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/plusbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="154dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/button_bg"
+            android:padding="10dp"
+            android:text="+"
+            android:textColor="@color/colorText"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintEnd_toStartOf="@+id/valOrder"
+            app:layout_constraintStart_toEndOf="@+id/minusbutton" />
+
+        <TextView
+            android:id="@+id/valOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="22dp"
+            android:fontFamily="@font/montserrat"
+            android:text="1"
+            android:textColor="@color/colorText"
+            android:textSize="39sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/OrderAddLinear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/OrderName" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

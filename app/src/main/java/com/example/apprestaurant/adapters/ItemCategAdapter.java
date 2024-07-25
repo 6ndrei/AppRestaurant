@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,8 +54,8 @@ public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.View
         final String mImage = list.get(position).getImage();
 
         holder.name.setText(list.get(position).getName());
-        holder.price.setText(list.get(position).getPrice());
-        holder.timing.setText(list.get(position).getTiming());
+        holder.price.setText(list.get(position).getPrice() + " RON");
+        holder.timing.setText(list.get(position).getTiming() + " minute");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +63,42 @@ public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.View
                 bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
 
                 View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout, null);
+                Button minus = sheetView.findViewById(R.id.minusbutton);
+                Button plus = sheetView.findViewById(R.id.plusbutton);
+                TextView amountTextView = sheetView.findViewById(R.id.valOrder);
+
+                final int[] amount = {1};
+                amountTextView.setText(String.valueOf(amount[0]));
+
+                minus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (amount[0] > 1) {
+                            amount[0]--;
+                            amountTextView.setText(String.valueOf(amount[0]));
+                        }
+                    }
+                });
+
+                plus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        amount[0]++;
+                        amountTextView.setText(String.valueOf(amount[0]));
+                    }
+                });
+
                 sheetView.findViewById(R.id.OrderAddLinear).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         SharedPreferences sharedPreferences = context.getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
-                        String tableNumber = sharedPreferences.getString("qrContent", ""); // Obține numărul mesei din sharedPreferences
+                        String tableNumber = sharedPreferences.getString("qrContent", "");
 
-                        CartModel item = new CartModel(mImage, mName, mPrice, tableNumber);
-                        CartManager.getInstance().addToCart(item);
+                        for (int i = 0; i < amount[0]; i++) {
+                            CartModel item = new CartModel(mImage, mName, mPrice, tableNumber);
+                            CartManager.getInstance().addToCart(item);
+                        }
+
                         Toast.makeText(context, "Adăugat în coș", Toast.LENGTH_SHORT).show();
                         bottomSheetDialog.dismiss();
                     }
@@ -92,6 +121,7 @@ public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.View
                 bottomSheetDialog.show();
             }
         });
+
     }
 
     @Override

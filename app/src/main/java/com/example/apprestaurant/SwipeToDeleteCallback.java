@@ -7,9 +7,11 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,18 +20,20 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private Context mContext;
     private Paint mClearPaint;
     private Paint mTextPaint;
-    private ColorDrawable mBackground;
-    private int backgroundColor;
+//    private ColorDrawable mBackground;
+  //  private int backgroundColor;
     private String mText;
     private int intrinsicWidth;
     private int intrinsicHeight;
+    private Drawable background;
 
     public SwipeToDeleteCallback(Context context) {
         mContext = context;
-        mBackground = new ColorDrawable();
-        backgroundColor = Color.parseColor("#ff0000");
+  //      mBackground = new ColorDrawable();
+      //  backgroundColor = Color.parseColor("#ff0000");
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        background = ContextCompat.getDrawable(context, R.drawable.swipe_bg);
 
         // Configurare Paint pentru text
         mTextPaint = new Paint();
@@ -72,9 +76,19 @@ public abstract class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
             return;
         }
 
-        mBackground.setColor(backgroundColor);
-        mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-        mBackground.draw(c);
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            // Aplică fundalul drawable-ului cu colțuri rotunjite
+            background.setBounds(
+                    itemView.getLeft(),
+                    itemView.getTop(),
+                    itemView.getRight(),
+                    itemView.getBottom()
+            );
+            background.draw(c);
+        }
+     //   mBackground.setColor(backgroundColor);
+     //   mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+     //   mBackground.draw(c);
 
         float textX = itemView.getRight() - (intrinsicWidth);
         float textY = itemView.getTop() + (itemHeight / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2);
