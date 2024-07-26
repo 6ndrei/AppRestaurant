@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -73,12 +74,8 @@ public class CartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_cart, container, false);
-
-        // Inițializare FirebaseFirestore
         firestore = FirebaseFirestore.getInstance();
         ordersCollection = firestore.collection("orders");
-
-        // Inițializare SharedPreferences
         sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         cartConstraint = view.findViewById(R.id.cartConstraint);
         cartConstraintt = view.findViewById(R.id.cartConstraintt);
@@ -145,6 +142,12 @@ public class CartFragment extends Fragment {
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPreferences = requireActivity().getSharedPreferences("Table_Session", 0);
+                String qrContent = sharedPreferences.getString("qrContent", "");
+                if (qrContent.equals("")) {
+                    Toast.makeText(getActivity(), "Scaneaza mai intai codul QR de la masa", Toast.LENGTH_SHORT).show();
+                return;
+            }
                 syncCartWithFirestore();
             }
         });
@@ -155,8 +158,6 @@ public class CartFragment extends Fragment {
                 showActiveOrdersDialog();
             }
         });
-
-        // Verifică dacă există o comandă activă
         boolean orderActive = sharedPreferences.getBoolean(KEY_ORDER_ACTIVE, false);
         if (orderActive) {
             String orderId = sharedPreferences.getString(KEY_ORDER_ID, null);
@@ -197,8 +198,10 @@ public class CartFragment extends Fragment {
         for (CartModel item : list) {
             itemsNames.append(item.getName()).append(", ");
         }
+        sharedPreferences = requireActivity().getSharedPreferences("Table_Session", 0);
+        String qrContent = sharedPreferences.getString("qrContent", "");
         String items = itemsNames.toString().trim();
-        String tableNumber = list.get(0).getTableNumber();
+        String tableNumber = qrContent;
         String status = "In Asteptare";
         String user = currentUser.getEmail();
 
@@ -243,7 +246,6 @@ public class CartFragment extends Fragment {
             @Override
             public void onSuccess(QuerySnapshot snapshots) {
                 if (snapshots != null && !snapshots.isEmpty()) {
-                    // Construiește mesajul pentru dialog
                     StringBuilder message = new StringBuilder();
                     int count = 1;
 
