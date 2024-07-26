@@ -20,7 +20,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
@@ -84,28 +86,64 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     private void moveToHistory(OrderModel order) {
         String orderId = order.getId();
-        String userEmail = order.getUserEmail();
-        if (orderId == null || userEmail == null) {
-            Log.e("OrdersAdapter", "Order ID or User Email is null. Cannot move to history.");
+        if (orderId == null) {
+            Log.e("OrdersAdapter", "Order ID is null. Cannot move to history.");
             return;
         }
 
-        firestore.collection("orders_history").document(orderId).set(order)
-                .addOnSuccessListener(aVoid -> {
-                    firestore.collection("orders").document(orderId).delete()
-                            .addOnSuccessListener(aVoid1 -> {
-                                ordersList.remove(order);
-                                notifyDataSetChanged();
-                                updateUserOrderHistory(userEmail, orderId);
-                            })
-                            .addOnFailureListener(e -> {
-                                // Eroare la ștergerea comenzii
-                            });
+        // Obține documentul din colecția "orders"
+        firestore.collection("orders").document(orderId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Obține timestamp-ul și câmpul "user" din documentul existent
+                        Long timestamp = documentSnapshot.getLong("timestamp");
+                        Object user = documentSnapshot.get("user"); // Folosește Object pentru a păstra orice tip
+
+                        // Creează un nou obiect OrderModel cu timestamp-ul și user-ul existent
+                        OrderModel orderWithDetails = new OrderModel(
+                                order.getId(),
+                                order.getItems(),
+                                order.getTableNumber(),
+                                order.getTotalPrice(),
+                                null, // Nu mai avem userId
+                                order.getStatus(),
+                                timestamp // Setează timestamp-ul existent
+                        );
+
+                        // Adaugă câmpul "user" manual
+                        Map<String, Object> orderData = new HashMap<>();
+                        orderData.put("items", orderWithDetails.getItems());
+                        orderData.put("tableNumber", orderWithDetails.getTableNumber());
+                        orderData.put("totalPrice", orderWithDetails.getTotalPrice());
+                        orderData.put("status", orderWithDetails.getStatus());
+                        orderData.put("timestamp", orderWithDetails.getTimestamp());
+                        orderData.put("user", user); // Adaugă câmpul "user" în documentul mutat
+
+                        // Mută documentul în colecția "orders_history"
+                        firestore.collection("orders_history").document(orderId).set(orderData)
+                                .addOnSuccessListener(aVoid -> {
+                                    firestore.collection("orders").document(orderId).delete()
+                                            .addOnSuccessListener(aVoid1 -> {
+                                                ordersList.remove(order);
+                                                notifyDataSetChanged();
+                                                // Nu mai este nevoie să actualizezi istoricul comenzilor utilizatorului
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("OrdersAdapter", "Error deleting order.", e);
+                                            });
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("OrdersAdapter", "Error moving order to history.", e);
+                                });
+                    } else {
+                        Log.e("OrdersAdapter", "Order document does not exist.");
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    // Eroare la mutarea comenzii în istoric
+                    Log.e("OrdersAdapter", "Error getting order document.", e);
                 });
     }
+
 
     private void updateUserOrderHistory(String userEmail, String orderId) {
         if (userEmail == null || orderId == null) {
@@ -121,10 +159,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                             db.collection("users").document(document.getId())
                                     .update("orders_history", FieldValue.arrayUnion(orderId))
                                     .addOnSuccessListener(aVoid -> {
-                                        // Actualizare reușită a orders_history pentru utilizator
+                                        Log.e("OrdersAdapter", "succes update user orders histroy");  // Actualizare reușită a orders_history pentru utilizator
                                     })
                                     .addOnFailureListener(e -> {
-                                        // Eroare la actualizarea orders_history
+                                        Log.e("OrdersAdapter", "eroare update user orders histroy");
                                     });
                         }
                     } else {

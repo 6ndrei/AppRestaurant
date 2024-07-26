@@ -73,36 +73,58 @@
             android:id="@+id/LogOutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="289dp"
-            android:layout_marginTop="667dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="153dp"
             android:layout_marginBottom="16dp"
             android:text="Sign-Out"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RecViewItemCateg" />
+
+        <TextView
+            android:id="@+id/AccWelcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="54dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/bananafont"
+            android:padding="0dp"
+            android:text="Buna, nume!"
+            android:textColor="@color/colorText"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:layout_marginTop="1dp"
-            android:background="@drawable/account_bg"
-            android:orientation="vertical"
+        <View
+            android:id="@+id/vieww"
+            android:layout_width="348dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="22dp"
+            android:background="@color/colorLight1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/AccWelcomeText" />
 
-            <TextView
-                android:id="@+id/AccWelcomeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bananafont"
-                android:padding="5dp"
-                android:text="Buna, nume!"
-                android:textColor="@color/colorText"
-                android:textSize="40sp" />
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/LastOrderRec"
+            android:layout_width="match_parent"
+            android:layout_height="540dp"
+            android:layout_margin="6dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="25dp"
+            android:paddingTop="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/LogOutButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vieww"
+            tools:visibility="visible" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

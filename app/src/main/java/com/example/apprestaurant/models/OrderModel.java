@@ -8,18 +8,28 @@ public class OrderModel {
     private String userId;
     private String status;
     private String userEmail;
+    private Long timestamp;
 
     public OrderModel() {
         // Constructor fără argumente necesar pentru Firestore
     }
 
-    public OrderModel(String id, String items, String tableNumber, double totalPrice, String userId, String status) {
+    public OrderModel(String id, String items, String tableNumber, double totalPrice, String userId, String status, Long timestamp) {
         this.id = id;
         this.items = items;
         this.tableNumber = tableNumber;
         this.totalPrice = totalPrice;
         this.userId = userId;
         this.status = status;
+        this.timestamp = timestamp;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getUserEmail() {

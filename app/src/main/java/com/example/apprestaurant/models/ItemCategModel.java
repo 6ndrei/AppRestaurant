@@ -7,6 +7,10 @@ public class ItemCategModel {
     String timing;
     String price;
 
+    public ItemCategModel() {
+        // Necesită un constructor fără argumente pentru Firestore
+    }
+
     public ItemCategModel(String image, String name, String timing, String price) {
         this.image = image;
         this.name = name;

@@ -5,153 +5,160 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loginlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/bg"
-        android:scaleType="centerCrop" />
+        tools:visibility="visible">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#88000000" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#88000000" />
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="245dp"
-        android:background="@android:color/transparent"
-        android:visibility="visible"
-        app:cardBackgroundColor="#A4FFFFFF"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="245dp"
             android:background="@android:color/transparent"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:visibility="visible">
+            android:visibility="visible"
+            app:cardBackgroundColor="#A4FFFFFF"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/loginText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:textAlignment="center"
-                android:textColor="#4B2929"
-                android:textSize="36sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:visibility="visible">
 
-            <EditText
-                android:id="@+id/username"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/custom_edittext"
-                android:drawablePadding="8dp"
-                android:hint="Username"
-                android:inputType="text"
-                android:maxLines="1"
-                android:padding="8dp"
-                android:textColorHighlight="@color/cardview_dark_background" />
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textAlignment="center"
+                    android:textColor="#4B2929"
+                    android:textSize="36sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/custom_edittext"
-                android:drawablePadding="8dp"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:padding="8dp"
-                android:textColorHighlight="@color/cardview_dark_background" />
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawablePadding="8dp"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="30dp"
-                android:backgroundTint="#4B2929"
-                android:text="Login"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                app:cornerRadius="20dp" />
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawablePadding="8dp"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textColorHighlight="@color/cardview_dark_background" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="#4B2929"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:cornerRadius="20dp" />
 
-    </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:elevation="10dp">
+        </androidx.cardview.widget.CardView>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/white"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp"
+            android:gravity="center">
 
-    <TextView
-        android:id="@+id/Register"
-        android:layout_width="130dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="141dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginBottom="27dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:minHeight="48dp"
-        android:onClick="openRegistrationActivity"
-        android:text="Inregistreaza-te aici"
-        android:textStyle="bold"
-        android:textColor="@color/light_font"
-        android:shadowColor="@color/text_shadow"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="10"
-        app:layout_constraintBottom_toTopOf="@+id/ContinueAsGuest"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/white"
+                android:indeterminateTintMode="src_atop" />
+        </RelativeLayout>
 
-    <TextView
-        android:id="@+id/ContinueAsGuest"
-        android:layout_width="133dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="139dp"
-        android:layout_marginBottom="86dp"
-        android:text="Continua ca Vizitator"
-        android:textColor="@color/light_font"
-        android:shadowColor="@color/text_shadow"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Register" />
+        <TextView
+            android:id="@+id/Register"
+            android:layout_width="130dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="141dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="141dp"
+            android:layout_marginBottom="27dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="48dp"
+            android:onClick="openRegistrationActivity"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="10"
+            android:text="Inregistreaza-te aici"
+            android:textColor="@color/light_font"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/ContinueAsGuest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <TextView
+            android:id="@+id/ContinueAsGuest"
+            android:layout_width="133dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="139dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="139dp"
+            android:layout_marginBottom="86dp"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="10"
+            android:text="Continua ca Vizitator"
+            android:textColor="@color/light_font"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Register" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

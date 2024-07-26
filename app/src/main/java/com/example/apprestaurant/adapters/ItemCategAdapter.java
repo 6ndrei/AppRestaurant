@@ -20,15 +20,15 @@ import com.example.apprestaurant.models.CartModel;
 import com.example.apprestaurant.models.ItemCategModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.ViewHolder> {
 
     private BottomSheetDialog bottomSheetDialog;
-    Context context;
-    ArrayList<ItemCategModel> list;
+    private final Context context;
+    private final List<ItemCategModel> list;
 
-    public ItemCategAdapter(Context context, ArrayList<ItemCategModel> list) {
+    public ItemCategAdapter(Context context, List<ItemCategModel> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,92 +36,26 @@ public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categ_menu, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categ_menu, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Use Glide to load the image from URL
+        ItemCategModel item = list.get(position);
+
         Glide.with(context)
-                .load(list.get(position).getImage()) // Assuming getImage() returns a URL String
-                .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-                .error(R.drawable.error_image) // Error image if Glide fails to load
+                .load(item.getImage())
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
                 .centerCrop()
                 .into(holder.imageView);
 
-        final String mName = list.get(position).getName();
-        final String mPrice = list.get(position).getPrice();
-        final String mImage = list.get(position).getImage();
+        holder.name.setText(item.getName());
+        holder.price.setText(item.getPrice() + " RON");
+        holder.timing.setText(item.getTiming() + " minute");
 
-        holder.name.setText(list.get(position).getName());
-        holder.price.setText(list.get(position).getPrice() + " RON");
-        holder.timing.setText(list.get(position).getTiming() + " minute");
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
-
-                View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout, null);
-                Button minus = sheetView.findViewById(R.id.minusbutton);
-                Button plus = sheetView.findViewById(R.id.plusbutton);
-                TextView amountTextView = sheetView.findViewById(R.id.valOrder);
-
-                final int[] amount = {1};
-                amountTextView.setText(String.valueOf(amount[0]));
-
-                minus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (amount[0] > 1) {
-                            amount[0]--;
-                            amountTextView.setText(String.valueOf(amount[0]));
-                        }
-                    }
-                });
-
-                plus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        amount[0]++;
-                        amountTextView.setText(String.valueOf(amount[0]));
-                    }
-                });
-
-                sheetView.findViewById(R.id.OrderAddLinear).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SharedPreferences sharedPreferences = context.getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
-                        String tableNumber = sharedPreferences.getString("qrContent", "");
-
-                        for (int i = 0; i < amount[0]; i++) {
-                            CartModel item = new CartModel(mImage, mName, mPrice, tableNumber);
-                            CartManager.getInstance().addToCart(item);
-                        }
-
-                        Toast.makeText(context, "Adăugat în coș", Toast.LENGTH_SHORT).show();
-                        bottomSheetDialog.dismiss();
-                    }
-                });
-
-                ImageView bottomImg = sheetView.findViewById(R.id.bottom_sheet_img);
-                TextView bottomName = sheetView.findViewById(R.id.OrderName);
-                TextView bottomPrice = sheetView.findViewById(R.id.OrderPrice);
-
-                bottomName.setText(mName);
-                bottomPrice.setText(mPrice);
-                Glide.with(context)
-                        .load(mImage) // Assuming mImage is a URL string
-                        .placeholder(R.drawable.placeholder_image)
-                        .error(R.drawable.error_image)
-                        .centerCrop()
-                        .into(bottomImg);
-
-                bottomSheetDialog.setContentView(sheetView);
-                bottomSheetDialog.show();
-            }
-        });
-
+        holder.itemView.setOnClickListener(view -> showBottomSheetDialog(item));
     }
 
     @Override
@@ -129,9 +63,62 @@ public class ItemCategAdapter extends RecyclerView.Adapter<ItemCategAdapter.View
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        TextView name, timing, price;
+    private void showBottomSheetDialog(ItemCategModel item) {
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetTheme);
+
+        View sheetView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_layout, null);
+        Button minus = sheetView.findViewById(R.id.minusbutton);
+        Button plus = sheetView.findViewById(R.id.plusbutton);
+        TextView amountTextView = sheetView.findViewById(R.id.valOrder);
+
+        final int[] amount = {1};
+        amountTextView.setText(String.valueOf(amount[0]));
+
+        minus.setOnClickListener(view -> {
+            if (amount[0] > 1) {
+                amount[0]--;
+                amountTextView.setText(String.valueOf(amount[0]));
+            }
+        });
+
+        plus.setOnClickListener(view -> {
+            amount[0]++;
+            amountTextView.setText(String.valueOf(amount[0]));
+        });
+
+        sheetView.findViewById(R.id.OrderAddLinear).setOnClickListener(view -> {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("Table_Session", Context.MODE_PRIVATE);
+            String tableNumber = sharedPreferences.getString("qrContent", "");
+
+            for (int i = 0; i < amount[0]; i++) {
+                CartModel cartItem = new CartModel(item.getImage(), item.getName(), item.getPrice(), tableNumber);
+                CartManager.getInstance().addToCart(cartItem);
+            }
+
+            Toast.makeText(context, "Adăugat în coș", Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+        });
+
+        ImageView bottomImg = sheetView.findViewById(R.id.bottom_sheet_img);
+        TextView bottomName = sheetView.findViewById(R.id.OrderName);
+        TextView bottomPrice = sheetView.findViewById(R.id.OrderPrice);
+
+        bottomName.setText(item.getName());
+        bottomPrice.setText(item.getPrice());
+        Glide.with(context)
+                .load(item.getImage())
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
+                .centerCrop()
+                .into(bottomImg);
+
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.show();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        final ImageView imageView;
+        final TextView name, timing, price;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

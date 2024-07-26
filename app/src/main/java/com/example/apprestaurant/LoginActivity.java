@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -66,18 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Log.d("LoginActivity", "contul anonim a fost sters cu succes");
                             db.collection("users").document(userId)
                                     .delete()
                                     .addOnSuccessListener(aVoid -> {
-                                        Log.d("LoginActivity", "documentul a fost sters din firestore");
                                         mAuth.signOut();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Log.e("LoginActivity", "documentul nu s-a putut sterge din firestore", e);
                                     });
-                        } else {
-                            Log.e("LoginActivity", "nu s-a putut sterge", task.getException());
                         }
                     }
                 });
@@ -136,6 +133,26 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            if (currentUser != null) {
+                                String userId = currentUser.getUid();
+                                DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                String name = document.getString("name");
+                                                SharedPreferences sharedPref = getSharedPreferences("user_name", Context.MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                editor.putString("userName", name);
+                                                editor.apply();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
                             navigateToMainActivity();
                         } else {
                             Toast.makeText(LoginActivity.this, "Nume sau parolă greșită", Toast.LENGTH_SHORT).show();
@@ -166,10 +183,8 @@ public class LoginActivity extends AppCompatActivity {
 
             userRef.get().addOnSuccessListener(documentSnapshot -> {
                 if (!documentSnapshot.exists()) {
-                    // Setăm rolul utilizatorului anonim la "User"
                     Map<String, Object> user = new HashMap<>();
                     user.put("role", "User");
-
                     userRef.set(user).addOnSuccessListener(aVoid -> {
                         navigateToMainActivity();
                     }).addOnFailureListener(e -> {

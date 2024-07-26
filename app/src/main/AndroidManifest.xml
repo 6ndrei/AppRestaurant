@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".DBInit"
         android:allowBackup="true"
@@ -15,61 +17,65 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppRestaurant"
         tools:targetApi="31">
-        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            android:screenOrientation="portrait"
-            android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:exported="true"
-            tools:replace="android:screenOrientation">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.google.zxing.client.android.SCAN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".AdminActivity"
-            android:exported="false"
-            android:label="Admin"/>
-        <activity
-            android:name=".OrdersActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".CartFragment"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".Account"
-            android:screenOrientation="portrait"
-            android:exported="false"
-            android:label="Cont" />
-        <activity
-            android:name=".RegistrationActivity"
-            android:screenOrientation="portrait"
-            android:exported="false"
-            android:label="activity_registration" />
-        <activity
-            android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".IntroductoryActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:clearTaskOnLaunch="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            tools:replace="android:screenOrientation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false"
+            android:label="Admin" />
+        <activity
+            android:name=".OrdersActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CartFragment"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Account"
+            android:exported="false"
+            android:label="Cont"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="false"
+            android:label="activity_registration"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

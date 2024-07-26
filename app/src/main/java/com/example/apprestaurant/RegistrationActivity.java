@@ -49,6 +49,14 @@ public class RegistrationActivity extends AppCompatActivity {
         String password = passwordRegister.getText().toString().trim();
         String name = nameRegister.getText().toString().trim();
 
+        if (password.length() <6) {
+            Toast.makeText(this, "Parola trebuie sa aiba minim 6 caractere", Toast.LENGTH_SHORT).show();
+        }
+
+        if (name.length() >12) {
+            Toast.makeText(this, "Numele poate avea maxim 12 caractere", Toast.LENGTH_SHORT).show();
+        }
+
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Introdu e-mail-ul și parola", Toast.LENGTH_SHORT).show();
             return;
@@ -56,6 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             Toast.makeText(this, "Introdu numele", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         mAuth.createUserWithEmailAndPassword(username, password)
